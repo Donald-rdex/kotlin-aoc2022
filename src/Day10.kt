@@ -28,7 +28,33 @@ fun main() {
     }
 
     fun part2(instructionQueue: ArrayDeque<String>) {
+        var registerX = 1
+        var cycle = 0
+        val screenList = arrayListOf<String>("","","","","","")
+        // ########################################
 
+        while (cycle <= 239) {
+            val nextInstruction = instructionQueue.first()
+            val pixelLoc = cycle % 40
+            val spriteLoc = registerX
+
+            val pixelVal = if (spriteLoc - 1 == pixelLoc || spriteLoc == pixelLoc || spriteLoc + 1 == pixelLoc) {
+                "#"
+            } else {
+                "."
+            }
+            screenList[cycle/40] += pixelVal
+
+            if (nextInstruction.matches("""-?\d+""".toRegex())) {
+                registerX += nextInstruction.toInt()
+            }
+            cycle++
+            instructionQueue.removeFirst()
+        }
+
+        for (line in screenList) {
+            println(line)
+        }
     }
 
     // test if implementation meets criteria from the description, like:
@@ -48,6 +74,14 @@ fun main() {
         instruction.split(" ").forEach { inputQueue.add(it) }
     }
     part1(inputQueue)
+
+    // begin part 2
+    inputQueue.clear()
+    for (instruction in testInput) {
+        instruction.split(" ").forEach { inputQueue.add(it) }
+    }
+    part2(inputQueue)
+
     inputQueue.clear()
     for (instruction in input) {
         instruction.split(" ").forEach { inputQueue.add(it) }
